@@ -1,0 +1,105 @@
+\documentclass[11pt]{article}
+%\usepackage[firstpage]{draftwatermark}
+\usepackage{times}
+\usepackage{pdfpages}
+\usepackage{fullpage}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{indentfirst}
+\usepackage{subcaption}
+\usepackage{units}
+
+\setcounter{secnumdepth}{4}
+\graphicspath{{images/}}
+\pagestyle{fancy}
+
+\newcommand{\doctitle}{AUV Control in Waves: Literature Overview}
+
+\addtolength{\headheight}{2em}
+\addtolength{\headsep}{1.5em}
+\lhead{\doctitle}
+\rhead{}
+
+\newcommand{\capt}[1]{\caption{\small \em #1}}
+
+\cfoot{\small Brian Bingham \today \\ \thepage}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\newenvironment{xitemize}{\begin{itemize}\addtolength{\itemsep}{-0.75em}}{\end{itemize}}
+\newenvironment{tasklist}{\begin{enumerate}[label=\textbf{\thesubsubsection-\arabic*},ref=\thesubsubsection-\arabic*,leftmargin=*]}{\end{enumerate}}
+\newcommand\todo[1]{{\bf TODO: #1}}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{4}
+
+\makeatletter
+\newcommand*{\compress}{\@minipagetrue}
+\makeatother
+
+%\renewcommand{\chaptername}{Volume}
+%\renewcommand{\thesection}{\Roman{section}}
+%\renewcommand{\thesubsection}{\Roman{section}-\Alph{subsection}}
+
+\usepackage{multibib}
+\newcites{c,m}%
+         {References for AUV Control in Waves,%
+           References for AUV models}
+         
+
+\begin{document}
+
+\newpage
+% Title Page
+\setcounter{page}{1}
+\begin{center}
+{\huge \doctitle}\footnote{Source at \url{https://bitbucket.org/brian_bingham/ocean_notes/src/master/auv_waves_lit.tex}.}
+\end{center}
+
+
+\section{AUV Control in Waves}
+
+\def  \Bibfname {auv_control_waves}
+
+In this section the pertinent literature is listed, roughly in order of relevance.  The quoted text after each citation is the annotation included in \texttt{annote} and/or \texttt{review} fields for each entry in the \texttt{.bib} archive.  The source file is available at \url{https://bitbucket.org/brian_bingham/latexlib/src/master/bib/auv_control_waves.bib}.
+
+The following list of references is in rough order of relevance/recommendation.
+
+
+\nocitec{dantas13study,datas12auv}
+\nocitec{moreira08h2}
+\nocitec{willy95attitude}
+\nocitec{liu08nonlinear}
+\nocitec{riedel98model}
+\nocitec{honghan12research}
+
+\bibliographystylec{plain-review}
+\bibliographyc{\Bibfname}
+
+
+\section{AUV Models}
+
+Below are some common models - Prestero's REMUS model seems the most applicable.
+
+\subsection{Prestero}
+
+Popular 6 DOF model of REMUS \citem{prestero01development} \citem{prestero01verification}. Used by \citem{yang16approximate,yang19nonlinear} and other.  Includes tank testing for coefficient identification and V\&V in open water.  Includes linearized control in the depth plane.
+
+\subsection{de Barros}
+
+Diving plane model of AUV Pirajuba with coefficients \citem{dantas12auv} includes references to original de Barros work (2008).  Linearized for LQR/LQG design.
+
+\subsection{Healey}
+
+Linearized diving and steering models for NPS vehicle.
+\citem{healey93multi,healey98model}.
+
+
+\newpage
+\setcounter{page}{1}
+\bibliographystylem{IEEEtran}
+\bibliographym{bbing_master}
+
+\end{document}

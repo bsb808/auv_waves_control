@@ -1,0 +1,78 @@
+% Encoding: UTF-8
+
+@Article{dantas13study,
+  author  = {Dantas, João and Jaime, José and de Barros, Ettore},
+  title   = {Study of autonomous underwater vehicle wave disturbance rejection in the diving plane},
+  journal = {Proceedings of the Institution of Mechanical Engineers, Part M: Journal of Engineering for the Maritime Environment},
+  year    = {2013},
+  month   = {11},
+  doi     = {10.1177/1475090213501650},
+  review  = {Control is linear quadratic Gaussian with loop transfer recovery.  Includes both first and second-order wave forces.  Makes distinct case for AUVs vis-a-vis submarines based on scale.  Uses the Brazilian AUV Pirajuba model  \citem{dantas12auv}.  Wave model based on P-M spectrum.  Uses \emph{wave filter} to estimate avg. depth, independent of wave height.},
+}
+
+@MastersThesis{willy95attitude,
+  author = {Christopher John Willy},
+  title  = {Attitude control of an underwater vehicle subjected to waves},
+  school = {Massachusetts Institute of Technology},
+  year   = {1994},
+  review = {Developes transfer function for 21" diameter AUV in wave sepectrum - inertia dominated flow.  Sliding mode control.  Notable for year of publication.},
+}
+
+@InProceedings{datas12auv,
+  author    = {João L.D. Dantas and Ettore A. [de Barros] and Jose J. da Cruz},
+  title     = {{AUV} Control in the Diving Plane Subject to Waves},
+  booktitle = {9th IFAC Conference on Manoeuvring and Control of Marine Craft},
+  year      = {2012},
+  volume    = {45},
+  number    = {27},
+  pages     = {319 - 324},
+  abstract  = {Underwater vehicles operating near of the sea surface are subject to wave disturbances in their motion, severely affecting the quality of bathymetric maps obtained. This paper describes a controller structure for compensating the wave disturbances in the vertical plane for a torpedo-like Autonomous Underwater Vehicle (AUV), based on a modified version of the LQG/LTR controller methodology with a wave filter. The proposed methodology uses additionally to the classic LQG/LTR design the measurement of non-controlled states, such as the pitch rate and heave velocity, in the control action. The wave disturbances were filtered away by a shaping filter fitted to the sea spectrum, and the sensors signals were integrated by a extended Kalman filter. The proposed control methodology was tested against the classical LQG/LTR controller in a six degrees of freedom non-linear AUV simulator, producing a better performance in most demanding conditions, like high wave crests.},
+  doi       = {https://doi.org/10.3182/20120919-3-IT-2046.00054},
+  issn      = {1474-6670},
+  journal   = {IFAC Proceedings Volumes},
+  keywords  = {LQG/LTR Control, AUV, Wave rejection, Wave Filter},
+}
+
+@Article{moreira08h2,
+  author  = {L. {Moreira} and C. {Guedes Soares}},
+  title   = {$H_{2}$ and $H_{\infty}$ Designs for Diving and Course Control of an Autonomous Underwater Vehicle in Presence of Waves},
+  journal = {IEEE Journal of Oceanic Engineering},
+  year    = {2008},
+  volume  = {33},
+  number  = {2},
+  pages   = {69-88},
+  review  = {Uses NPS Aries vehicle model.  First and second-order wave forces - Froude-Kriloff and diffration forces.  Accounts for forward vehicle speed.  Spectral factorization to model sea spectrum as transfor function (color filter), then applying loop shaping.},
+}
+
+@InProceedings{riedel98model,
+  author    = {J. S. Riedel and A. Healey},
+  title     = {Model based predictive control of {AUV}s for station keeping in a shallow water wave environment},
+  booktitle = {International Advanced Robotics Program},
+  year      = {1998},
+  address   = {Lafayette, Lousiana},
+  review    = {Station keeping is a slightly different problem; primary concern is surge model.    Auto-regressive  model, recurssive method for wave modeling, - of sea spectrum and dynamic model to predict/estimate wave disturbances so that controller can cancel out disturbance.  LQR control design.},
+}
+
+@InProceedings{honghan12research,
+  author    = {Z. {Hong-han} and W. {Di} and L. {Cong-cong} and Y. {Zhe-ping}},
+  title     = {Research on depth control based on output disturbance observer for UUVs maneuvering near the surface},
+  booktitle = {2012 IEEE International Conference on Mechatronics and Automation},
+  year      = {2012},
+  pages     = {2564-2568},
+  review    = {Very brief.  Considers only pitch dynamics - over simplified?},
+}
+
+@Article{liu08nonlinear,
+  author    = {Shuyong Liu and Danwei Wang and Engkee Poh},
+  title     = {Non-linear output feedback tracking control for AUVs in shallow wave disturbance condition},
+  journal   = {International Journal of Control},
+  year      = {2008},
+  volume    = {81},
+  number    = {11},
+  pages     = {1806-1823},
+  doi       = {10.1080/00207170801898885},
+  publisher = {Taylor \& Francis},
+  review    = {Non-linear observer to reject wave freqeuncy motion - estimate avg. detph.  Feedback designed using backstepping.  Proves Lyapunov stability.},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}
