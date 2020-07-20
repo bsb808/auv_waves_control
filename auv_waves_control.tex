@@ -48,7 +48,6 @@
 % http://www.michaelshell.org/tex/testflow/
 
 
-
 \documentclass[journal]{IEEEtran}
 %
 % If IEEEtran.cls has not been installed into the LaTeX system files,
@@ -61,6 +60,9 @@
 
 % Some very useful LaTeX packages include:
 % (uncomment the ones you want to load)
+\usepackage{amsmath}
+\usepackage{lipsum}
+\usepackage{multibib}
 
 
 % *** MISC UTILITY PACKAGES ***
@@ -484,14 +486,63 @@ I wish you the best of success.
  
 \hfill August 26, 2015
 
-\subsection{Subsection Heading Here}
-Subsection text here.
+\subsection{Background Theory}
+The vehicle kinematics for the 6-Degree-of-freedom motion can be described by the following vectors:
+\begin{align*}
+    &\boldsymbol{\eta}_1=\begin{bmatrix} x & y & z \end{bmatrix}^T
+    \quad &&\boldsymbol{\eta}_2=\begin{bmatrix} \phi & \theta & \psi  \end{bmatrix}^T\\
+    &\boldsymbol{v}_1=\begin{bmatrix} u & v & w \end{bmatrix}^T
+    \quad &&\boldsymbol{v}_2=\begin{bmatrix} p & q & r  \end{bmatrix}^T\\
+    &\boldsymbol{\tau}_1=\begin{bmatrix} X & Y & Z \end{bmatrix}^T
+    \quad &&\boldsymbol{\tau}_2=\begin{bmatrix} K & M & N  \end{bmatrix}^T
+\end{align*}
+here, $\boldsymbol{\eta}$ represents the position and orientation in the inertial or earth-fixed frame, $\boldsymbol{v}$ the translational and rotational velocities with respect to the body-fixed reference frame, and $\boldsymbol{\tau}$ the total forces and moments in the body-fixed reference frame.
+
+Using the above vector notations, the 2-dimensional equations for surge, heave, and pitch motions can be written as follows(deducted from \cite{prestero01development}):
+\begin{equation} \label{EOM}
+    \begin{split}
+        m[\dot{u}&+wq-x_gq^2+z_g\dot{q}]-X_{u|u|}u|u| \\
+        &-X_{\dot{u}}\dot{u}-X_{wq}-X_{qq}q^2=X_{HS}+X_{prop} \\
+        m[\dot{w}&-uq-z_gq^2-x_g\dot{q}]-Z_{w|w|}w|w|\\
+        &-Z_{q|q|}q|q|-Z_{\dot{w}}\dot{w}-Z_{\dot{q}}\dot{q}\\
+        &-Z_{uq}uq-Z_{uw}uw-Z_{uu\delta_s}u^2\delta_s=Z_{HS} \\
+        I_{yy}\dot{q}&+m[z_g(\dot{u}+wq)-x_g(\dot{w}-uq)]\\
+        &-M_{w|w|}w|w|-M_{q|q|}q|q|-M_{\dot{w}}\dot{w}-M_{\dot{q}}\dot{q}\\
+        &-M_{uq}uq-M_{uw}uw-M_{uu\delta_{s}}u^2\delta_s=M_{HS}
+    \end{split}
+\end{equation}
+In a matrix form,
+\begin{multline} \label{EOM_Matrix}
+\begin{bmatrix}
+m-X_{\dot{u}} & 0 & mz_g\\ 
+0 &  m-Z_{\dot{w}} & -mx_g-Z_{\dot{q}}\\ 
+mz_g & -mx_g-M_{\dot{w}} & I_{yy}-M_{\dot{q}}
+\end{bmatrix}
+\begin{bmatrix} \dot{u}\\ \dot{w}\\ \dot{q} \end{bmatrix} + \\
+\left[
+\begin{matrix}
+-X_{u|u|}|u| & mq-X_{wq}q \\ 
+-mq-Z_{wq}q-Z_{uu\delta_s}u\delta_s & -Z_{w|w|}|w|-Z_{uw}u \\ 
+-M_{uw}w-M_{uu\delta_s}u\delta_s & -M_{w|w|}|w| 
+\end{matrix} \right. \\ \left.
+\begin{matrix}
+-mx_gq-X_{qq}q \\
+-mz_gq-Z_{q|q|}|q| \\
+mz_gw+mx_gu-M_{q|q|}|q|-M_{uq}u
+\end{matrix} 
+\right] 
+\begin{bmatrix} u\\ w\\ q \end{bmatrix} \\
+= \begin{bmatrix} X_{HS}+X_{prop}\\ Z_{HS}\\ M_{HS} \end{bmatrix}
+\end{multline}
+where $m$ is the mass of the vehicle, $x_g,z_g$ are locations of the vehicle centers of gravity, $X_{HS}, Z_{HS}, M_{HS}$ are hydrostatic forces and moment, $X_{prop}$ is the thrust force by propulsion. Also, the origin of the body-fixed reference frame is located at the center of buoyancy.
+
+
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
+%\subsubsection{Subsubsection Heading Here}
+%Subsubsection text here.
 
 
 % An example of a floating figure using the graphicx package.
@@ -653,20 +704,21 @@ The authors would like to thank...
 % http://mirror.ctan.org/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
-%\bibliographystyle{IEEEtran}
+\bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
 %\bibliography{IEEEabrv,../bib/paper}
+\bibliography{bbing_master}
 %
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
+%\begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%\bibitem{IEEEhowto:kopka}
+%H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+%  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
 
-\end{thebibliography}
+%\end{thebibliography}
 
 % biography section
 % 
@@ -679,22 +731,22 @@ H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
 %\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
 % or if you just want to reserve a space for a photo:
 
-\begin{IEEEbiography}{Michael Shell}
-Biography text here.
-\end{IEEEbiography}
+%\begin{IEEEbiography}{Michael Shell}
+%Biography text here.
+%\end{IEEEbiography}
 
 % if you will not have a photo at all:
-\begin{IEEEbiographynophoto}{John Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
+%\begin{IEEEbiographynophoto}{John Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
 
 % insert where needed to balance the two columns on the last page with
 % biographies
 %\newpage
 
-\begin{IEEEbiographynophoto}{Jane Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
+%\begin{IEEEbiographynophoto}{Jane Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
 
 % You can push biographies down or up by placing
 % a \vfill before or after them. The appropriate
