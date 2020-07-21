@@ -32,7 +32,16 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear all
-clc
+%close all
+
+% Clear figures
+h =  findobj('type','figure');
+n = length(h);
+for ii = 1:n
+    figure(ii);
+    clf();
+end
+
 
 m=30;       % mass in kg
 Iyy=3.45;   % mass moment of interia about y-axis in kg-m^2
@@ -69,7 +78,7 @@ Cmat=zeros(3,3);    % temporary matrix
 FF=zeros(3,3);      % temporary vector
 
 dt=0.001;      % time step size (sec)
-ntime=2000;      % no of time steps
+ntime=20000;      % no of time steps
 nit=5000;     % no of iteration for convergence
 tol=0.001;   % tolerance for convergence
 
@@ -80,6 +89,7 @@ x_position=zeros(ntime+1,1);        % position in x-axis
 z_position=zeros(ntime+1,1);        % position in z-axis
 q_position=zeros(ntime+1,1);        % angular position
 time=zeros(ntime+1,1);     % time
+dell = zeros(ntime+1,1);
 
 NoIt=zeros(ntime+1,1);       % array to store no. of iteration for convergency
 ConvError=zeros(ntime+1,1);       % array to store the error ratio for convergency
@@ -88,6 +98,13 @@ u(1)=0;     % inital x-velocity
 v(1)=0;     % inital z-velocity
 q(1)=0;     % inital angular velocity about y-axis
 
+% Test for values of del
+dels = logspace(-2,-0.301,4);
+dels = [-flip(dels), 0, dels];
+lstr = {};
+for ii = 1:length(dels)
+    del = dels(ii);
+    lstr{ii} = sprintf('del = %.2f',del);
 	
 for itime=1:ntime   % time increment loop
     
@@ -97,11 +114,27 @@ for itime=1:ntime   % time increment loop
     wp=w(itime);     % current velocity in z-axis
     qp=q(itime);     % current angular velocity about z-axis
 
+    %%%%  Feedback Control
+    % State vector 
+    state = [x_position(itime)
+        z_position(itime)
+        q_position(itime)
+        u(itime)
+        w(itime)
+        q(itime)];
+    % Setpoint
+    z_setpoint = -1.0;
+    % Controller
+    %del = remus2d_pid(z_setpoint,state);
+    dell(itime) = del;
+    %%%%
+        
     it=0;
     ratio=1;     % initial value for covenrgence
 
     while (it <= nit && ratio > tol)
     it=it+1;    
+    
     solo=[up; wp; qp];      % Assumed solution
     
     Amat(1,1)=m-Xudot;  % Mtarix A
@@ -151,43 +184,60 @@ for itime=1:ntime   % time increment loop
 end  % end loop for itime
 
 
-figure()
-subplot(3,1,1)
+figure(1);
+%clf();
+subplot(3,1,1);
 plot(time,u)
+hold on
 xlabel('time (sec)')
 ylabel('u (m/s)')
 grid on; box on;
 title('Velocity Plot')
 subplot(3,1,2)
 plot(time,w)
+hold on
 xlabel('time (sec)')
 ylabel('w (m/s)')
 grid on; box on;
 subplot(3,1,3)
 plot(time,q)
+hold on
 xlabel('time (sec)')
 ylabel('q (rad/s)')
 grid on; box on;
+legend(lstr)
 
-figure()
-subplot(3,1,1)
+figure(2);
+%clf();
+subplot(4,1,1)
 plot(time,x_position)
+hold on
 xlabel('time (sec)')
 ylabel('x position (m)')
 grid on; box on;
-title('Poistion Plot')
-subplot(3,1,2)
+title('Position Plot')
+subplot(4,1,2)
 plot(time,z_position)
+hold on
 xlabel('time (sec)')
 ylabel('z position(m)')
 grid on; box on;
-subplot(3,1,3)
+subplot(4,1,3)
 plot(time,q_position)
+hold on
 xlabel('time (sec)')
 ylabel('pitch angle (ra)')
 grid on; box on;
+subplot(4,1,4)
+plot(time,dell);
+hold on
+xlabel('time (sec)')
+ylabel('fin angle (ra)')
+grid on; box on;
+legend(lstr)
 
-figure()
+figure(3);
+clf()
 subplot(2,1,1)
 plot(time,NoIt)
 xlabel('time (sec)')
@@ -200,6 +250,7 @@ xlabel('time (sec)')
 ylabel('Ratio of Solutions')
 title('Error at Convergence')
 
+end
 
 
 
