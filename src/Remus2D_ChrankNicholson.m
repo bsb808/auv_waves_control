@@ -68,11 +68,10 @@ exLoad=zeros(3,1);  % initialization of column vector exLoad
 Cmat=zeros(3,3);    % temporary matrix
 FF=zeros(3,3);      % temporary vector
 
-dt=0.005;      % time step size (sec)
-ntime=50;      % no of time steps
-nit=1000;     % no of iteration for convergence
+dt=0.001;      % time step size (sec)
+ntime=2000;      % no of time steps
+nit=5000;     % no of iteration for convergence
 tol=0.001;   % tolerance for convergence
-ratio=1;     % initial value for covenrgence
 
 u=zeros(ntime+1,1);     % velocity in x-axis
 w=zeros(ntime+1,1);     % velocity in z-axis
@@ -82,7 +81,8 @@ z_position=zeros(ntime+1,1);        % position in z-axis
 q_position=zeros(ntime+1,1);        % angular position
 time=zeros(ntime+1,1);     % time
 
-NoIt=zeros(ntime,1);       % array to store no. of iteration for convergency
+NoIt=zeros(ntime+1,1);       % array to store no. of iteration for convergency
+ConvError=zeros(ntime+1,1);       % array to store the error ratio for convergency
 
 u(1)=0;     % inital x-velocity
 v(1)=0;     % inital z-velocity
@@ -97,11 +97,11 @@ for itime=1:ntime   % time increment loop
     wp=w(itime);     % current velocity in z-axis
     qp=q(itime);     % current angular velocity about z-axis
 
-    it=1;
-    % NEW CODE ratio=1 inside FOR loop
-    ratio=ones(nit,1);
-    while (it <= nit && ratio(it) > tol)
-    %it=it+1
+    it=0;
+    ratio=1;     % initial value for covenrgence
+
+    while (it <= nit && ratio > tol)
+    it=it+1;    
     solo=[up; wp; qp];      % Assumed solution
     
     Amat(1,1)=m-Xudot;  % Mtarix A
@@ -129,23 +129,16 @@ for itime=1:ntime   % time increment loop
     
     soln=Cmat\FF;           % new solution
     
-    % CHANGED HERE
-    it=it+1;
-    %diff=(soln(1)-solo(1))^2+(soln(1)-solo(1))^2+(soln(1)-solo(1))^2;
-    diff=(soln(1)-solo(1))^2+(soln(2)-solo(2))^2+(soln(3)-solo(3))^2;
-    ratio(it)=sqrt(diff/(soln(1)^2+soln(2)^2+soln(3)^2));
+    diff=(soln(1)-solo(1))^2+(soln(1)-solo(1))^2+(soln(1)-solo(1))^2;
+    ratio=sqrt(diff/(soln(1)^2+soln(2)^2+soln(3)^2));
     
     up=(solo(1)+soln(1))/2; 
     wp=(solo(2)+soln(2))/2; 
     qp=(solo(3)+soln(3))/2;    
-    NoIt(itime)=it;
+    NoIt(itime+1)=it;
+    ConvError(itime+1)=ratio;
     
     end  % iteration loop for convergence
-    figure(100)
-    hold on;
-    plot(ratio(1:it))
-    plot([1 it],[tol tol],'--')
-    pause
     
     u(itime+1)=soln(1);
     w(itime+1)=soln(2);
@@ -157,35 +150,55 @@ for itime=1:ntime   % time increment loop
     
 end  % end loop for itime
 
-figure()
-plot(time,x_position,'ro',time,z_position,'k*')
-legend('x-posi','z-posi')
-xlabel('Time')
-ylabel('Position')
-title('Position in time')
 
 figure()
-plot(x_position,z_position,'-')
-xlabel('position x')
-ylabel('position z')
-title('Position in time')
+subplot(3,1,1)
+plot(time,u)
+xlabel('time (sec)')
+ylabel('u (m/s)')
+grid on; box on;
+title('Velocity Plot')
+subplot(3,1,2)
+plot(time,w)
+xlabel('time (sec)')
+ylabel('w (m/s)')
+grid on; box on;
+subplot(3,1,3)
+plot(time,q)
+xlabel('time (sec)')
+ylabel('q (rad/s)')
+grid on; box on;
 
 figure()
-plot(time,u,'ro',time,w,'k*')
-legend('x-velo','z-velo')
-xlabel('Time')
-ylabel('Velocity')
-title('Velocity in time')
+subplot(3,1,1)
+plot(time,x_position)
+xlabel('time (sec)')
+ylabel('x position (m)')
+grid on; box on;
+title('Poistion Plot')
+subplot(3,1,2)
+plot(time,z_position)
+xlabel('time (sec)')
+ylabel('z position(m)')
+grid on; box on;
+subplot(3,1,3)
+plot(time,q_position)
+xlabel('time (sec)')
+ylabel('pitch angle (ra)')
+grid on; box on;
 
+figure()
+subplot(2,1,1)
+plot(time,NoIt)
+xlabel('time (sec)')
+ylabel('No. of Iterations')
+title('No. of Itertaions for Convergency')
 
-
-
-
-
-
-
-
-
+subplot(2,1,2)
+plot(time,ConvError)
+xlabel('time (sec)')
+ylabel('Ratio of Solutions')
+title('Error at Convergence')
 
 
 
